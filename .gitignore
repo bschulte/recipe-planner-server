@@ -1,0 +1,8 @@
+logs/*.log
+tasks.todo
+
+node_modules
+.env
+dist
+coverage
+src/testing/testDb.sql

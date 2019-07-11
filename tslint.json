@@ -1,0 +1,19 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-console": false,
+    "trailing-comma": false,
+    "no-shadowed-variable": false,
+    "typedef": [true, "property-declaration", "arrow-parameter", "parameter"],
+    "max-line-length": false,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "variable-name": false,
+    "max-classes-per-file": false,
+    "no-empty": false,
+    "only-arrow-functions": false,
+    "no-var-requires": false,
+    "semicolon": false,
+    "object-literal-key-quotes": false
+  }
+}
