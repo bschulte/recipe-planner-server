@@ -25,6 +25,19 @@ export class RecipeService {
     return await newRecipe;
   }
 
+  public async createAll(recipes: Array<Partial<Recipe>>, userId: number) {
+    const recipeEntries = recipes.map((recipeInfo: Partial<Recipe>) => {
+      const newRecipe = new Recipe();
+      newRecipe.url = recipeInfo.url;
+      newRecipe.name = recipeInfo.name;
+      newRecipe.userId = userId;
+
+      return newRecipe;
+    });
+
+    return await this.repo.save(recipeEntries);
+  }
+
   public async update(id: number, recipeInput: RecipeInput) {
     await this.repo.update(id, recipeInput);
 

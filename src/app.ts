@@ -15,7 +15,8 @@ import { ApolloServer } from "apollo-server-koa";
 import { Container } from "typedi";
 import {
   useContainer as routingUseContainer,
-  useKoaServer
+  useKoaServer,
+  Action
 } from "routing-controllers";
 import {
   buildSchemaSync,
@@ -50,23 +51,6 @@ const createApp = async () => {
   // Use bodyparser for body parameters being sent
   app.use(bodyParser());
 
-  // Use DI for controllers
-  routingUseContainer(Container);
-  useKoaServer(app, {
-    controllers: [`${__dirname}/modules/**/*.controller.ts`]
-  });
-
-  // Global exception handler
-  app.use(async (ctx: Context, next: any) => {
-    try {
-      await next();
-    } catch (err) {
-      console.log("Caught error:");
-      console.log(err);
-      ctx.throw(err.message, err.status);
-    }
-  });
-
   // Enable the async local storage for the application
   als.enable();
 
@@ -87,6 +71,26 @@ const createApp = async () => {
     }
 
     await next();
+  });
+
+  // Use DI for controllers
+  routingUseContainer(Container);
+  useKoaServer(app, {
+    controllers: [`${__dirname}/modules/**/*.controller.ts`],
+    authorizationChecker: async (action: Action, roles: string[]) => {
+      return await authChecker(action, roles);
+    }
+  });
+
+  // Global exception handler
+  app.use(async (ctx: Context, next: any) => {
+    try {
+      await next();
+    } catch (err) {
+      console.log("Caught error:");
+      console.log(err);
+      ctx.throw(err.message, err.status);
+    }
   });
 
   // Static files

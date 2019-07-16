@@ -25,7 +25,7 @@ export default class Recipe {
   public url: string;
 
   @Field()
-  @Column()
+  @Column({ default: "Main" })
   public dishType: string;
 
   @Field()
